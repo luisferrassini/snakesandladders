@@ -5,6 +5,8 @@ class CreateTiles < ActiveRecord::Migration[7.1]
       t.string :title
       t.text :description
       t.string :image
+      t.integer :special_value, default: 0
+
       t.belongs_to :board
 
       t.timestamps

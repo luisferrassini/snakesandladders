@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_10_21_200149) do
+ActiveRecord::Schema[7.1].define(version: 2023_10_21_194626) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,9 +30,12 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_21_200149) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.string "nickname"
+    t.string "name"
+    t.integer "rerolls", default: 0
+    t.bigint "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_players_on_game_id"
   end
 
   create_table "rolls", force: :cascade do |t|
@@ -48,11 +51,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_21_200149) do
     t.string "title"
     t.text "description"
     t.string "image"
+    t.integer "special_value", default: 0
     t.bigint "board_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["board_id"], name: "index_tiles_on_board_id"
   end
 
+  add_foreign_key "players", "games"
   add_foreign_key "rolls", "players"
 end
