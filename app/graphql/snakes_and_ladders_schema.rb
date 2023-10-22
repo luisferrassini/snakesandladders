@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GraphqlTestSchema < GraphQL::Schema
+class SnakesAndLaddersSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
 
