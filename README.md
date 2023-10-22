@@ -293,3 +293,12 @@ POST request to ```http://127.0.0.1:3000/setup``` with the following JSON struct
 ## Play the game
 
 Roll the dice with a GET request to ```http://127.0.0.1:3000/roll/:player_id(/:dice_sides)```
+
+## Todo
+
+* Refactor special tile code to a SpecialEffect class
+* Implement frontend with the board to interact with
+* Implement upload proof and proof approval by a game master before being able to roll again
+* Implement user login
+* Implement user can be on multiple games if he's registered
+* Implement user roles (player and game master)
