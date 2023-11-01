@@ -71,3 +71,4 @@ group :test do
   gem "selenium-webdriver"
 end
 gem "graphiql-rails", group: :development
+gem "tailwindcss-rails"
