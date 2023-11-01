@@ -1,0 +1,76 @@
+<div id="app" class="container mx-auto mt-28 px-5 flex">
+    <div class="flex flex-col sm:w-1/2 md:w-1/4 mx-6">
+        <div class="mb-12">
+            <h1 class="text-4xl font-medium leading-tight text-neutral-800 dark:text-neutral-900"><%=@game.board.title %></h1>
+        </div>
+        <div class="mb-12">
+            <h2 class="text-2xl font-small leading-tight text-neutral-800 dark:text-neutral-900">Last 5 Rolls</h2>
+            <ul class="px-2 py-1 mr-2 text-xs font-bold leading-none">
+                <% @rolls.each do |roll| %>
+                    <li class="m-5 w-fit" title="<%=roll.created_at%>">
+                        <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                            <%=roll.value%>
+                        </span>
+                        <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs leading-none">
+                            <span class="font-bold"><%=roll.player.name%></span>
+                        </span>
+                    </li>
+                <% end %>
+                <button class="mx-5 w-fit border rounded p-1">See all rolls</button>
+            </ul>
+        </div>
+        <div>
+            <h2 class="text-2xl font-small leading-tight text-neutral-800 dark:text-neutral-900">Roll</h2>
+            <div class="flex justify-start mt-2">
+                <select name="player-roll" id="player-roll" class="border border-gray-600 rounded">
+                    <% @game.players.each do |player| %>
+                    <option value="<%=player.id%>"><%=player.name%></option>
+                    <% end %>
+                </select>
+                <button class="w-fit border border-gray-600 rounded p-3 ml-1" @click="sendRequest()">Roll</button>
+            </div>
+        </div>
+    </div>
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:w-1/2 md:w-3/4">
+        <% @game.board.tiles.each do |tile| %>
+            <div class="rounded-lg p-3 w-48 h-48 <%=tile.special_value == 0 ? "dark:bg-neutral-500" : (tile.special_value > 0 ? "dark:bg-green-400" : "dark:bg-red-400")%>">
+                <h2 class="text-2xl font-medium leading-tight">
+                    <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 bg-black rounded-full">
+                        <%=tile.number%>
+                    </span>
+                    <%=tile.title%>
+                </h2>
+                <p class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white h-24"><%=tile.description%></p>
+                <% players_in_tile = @player_tiles.select { |player| player[:tile].number == tile.number } %>
+                <% if players_in_tile.present? %>
+                    <ul>
+                        <% players_in_tile.each do |player_in_tile| %>
+                            <li class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-blue-100 bg-blue-600 rounded-full"><%=player_in_tile[:name]%></li>
+                        <% end %>
+                    </ul>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+</div>
+
+<script>
+    const { createApp, ref } = Vue
+
+    createApp({
+        setup() {
+            const message = ref('Hello vue!')
+            return {
+                message
+            }
+        },
+        methods: {
+            sendRequest() {
+                let element = document.getElementById("player-roll")
+                if (element.value) {
+                    axios.get(`roll/${element.value}`).then((res) => (console.log(res)))
+                }
+            }
+        }
+    }).mount('#app')
+</script>

@@ -40,6 +40,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_21_194626) do
 
   create_table "rolls", force: :cascade do |t|
     t.integer "value"
+    t.boolean "special", default: false
     t.bigint "player_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

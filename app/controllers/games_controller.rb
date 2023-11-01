@@ -1,6 +1,24 @@
 class GamesController < ApplicationController
     protect_from_forgery with: :null_session
 
+    def index
+        @games = Game.all
+        render :index
+    end
+
+    def show
+        @game = Game.find(params[:game_id])
+        @player_tiles = @game.players.map{ |player| { name: player.name, tile: player.get_current_tile } }
+        @rolls = []
+        @game.players.each do |player|
+            player.rolls.order(created_at: :desc).each do |roll|
+                @rolls.push roll unless roll.special
+            end
+        end
+        @rolls = @rolls.slice(0, 5)
+        render :show
+    end
+
     def setup
         new_game = Game.new
 
@@ -15,6 +33,7 @@ class GamesController < ApplicationController
         end
 
         new_game.board = Board.new
+        new_game.board.title = params[:board][:title]
         new_game.board.tiles = []
         params[:board][:tiles].each do |tile|
             new_tile = Tile.new

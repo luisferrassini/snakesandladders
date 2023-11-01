@@ -24,6 +24,7 @@ class Player < ApplicationRecord
     def activate_special(value)
         roll = Roll.new
         roll.value = value
+        roll.special = true
         self.rolls.push roll
         roll
     end

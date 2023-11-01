@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-    get 'roll/:player_id(/:dice_sides)', to: 'games#roll'
-    get 'reroll/:player_id(/:dice_sides)', to: 'games#reroll'
+    get '', to: 'games#index'
+    get 'games/', to: 'games#index'
+    get 'game/:game_id', to: 'games#show'
+    get 'game/roll/:player_id(/:dice_sides)', to: 'games#roll'
+    get 'game/reroll/:player_id(/:dice_sides)', to: 'games#reroll'
 
     post 'setup', to: 'games#setup'
 
